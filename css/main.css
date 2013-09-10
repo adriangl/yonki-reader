@@ -1,3 +1,19 @@
 .inline-block{
 	display:inline-block;
 }
+
+#logo{
+	font: normal bold 200% "Arial Black", "Helvetica Black", Gadget, sans-serif;
+	letter-spacing: -3px;
+	margin: 0 15px 0 0;
+	padding: 0;
+}
+
+#logo span.alt {
+	font-style: normal;
+	display: inline;
+}
+
+span.alt {
+	color: #54a4de;
+}
