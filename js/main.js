@@ -6,7 +6,7 @@ function parseFeed(feedUrl){
 	// Use Google AJAX API to read the feed and return the parsed
 	// data as JSON
 	$.ajax({
-		url      : document.location.protocol + '//ajax.googleapis.com/ajax/services/feed/load?v=1.0&callback=?&num=10&q=' + encodeURIComponent(feedUrl),
+		url      : document.location.protocol + '//ajax.googleapis.com/ajax/services/feed/load?v=1.0&callback=?&num=50&q=' + encodeURIComponent(feedUrl),
 		dataType : 'json',
 		success  : function (data) {
 			if (data.responseData.feed && data.responseData.feed.entries) {
@@ -24,10 +24,11 @@ function loadPostsData(){
 	var postsContainer = $("#posts-container");
 	$.each(entries, function(entryIdx){
 		var entry = entries[entryIdx];
-		var post = $("<div class=\"post\""+entryIdx+"></div>");
+		var post = $("<div class=\"well post-"+entryIdx+"\"></div>");
 		// Post title
 		var postTitle = $("<div class=\"post-title\"></div>");
-		$(postTitle).append("<h3>"+entry.title+"</h3>");
+		$(postTitle).append("<h4>"+entry.title+"</h4>");
+		$(postTitle).append("<em><small>"+parseDate(entry.publishedDate)+"</small></em>");
 		
 		// Post content
 		var postContent = $("<div class=\"post-content\"></div>");
@@ -54,6 +55,11 @@ function loadPostsData(){
 
 		$(postsContainer).append(post);
 	});
+}
+
+function parseDate(dateString){
+	var d = new Date(Date.parse(dateString));
+	return d.toLocaleString();
 }
 
 function main(){
