@@ -1,0 +1,25 @@
+{
+    "version": "1.0",
+    "name": "Yonki Blog",
+    "description": "Reader for the famous humour blog Yonkiblog.com",
+    "launch_path": "/index.html",
+    "icons": {
+        "16": "/img/icons/mortar-16.png",
+        "48": "/img/icons/mortar-48.png",
+        "128": "/img/icons/mortar-128.png"
+    },
+    "developer": {
+        "name": "Adrián García",
+        "url": "http://yourawesomeapp.com"
+    },
+    "installs_allowed_from": ["*"],
+    "locales": {
+        "es": {
+            "description": "Lector del popular blog de humor Yonkiblog.com",
+            "developer": {
+                "url": "http://yourawesomeapp.com"
+            }
+        }
+    },
+    "default_locale": "es"
+}
