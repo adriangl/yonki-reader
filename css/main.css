@@ -17,3 +17,7 @@
 span.alt {
 	color: #54a4de;
 }
+
+[class^="post-title"] i{
+	text-decoration: none;
+}

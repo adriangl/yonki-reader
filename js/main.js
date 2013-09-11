@@ -18,7 +18,7 @@ function parseFeed(feedUrl){
 			}
 		},
 		error : function(){
-			console.log("Error!!");
+			console.log("Error loading data");
 		}
 	});
 }
@@ -27,20 +27,41 @@ function loadPostsData(){
 	var postsContainer = $("#posts-container");
 	$.each(entries, function(entryIdx){
 		var entry = entries[entryIdx];
-		var post = $("<div class=\"well\" id=\"post-"+entryIdx+"\"></div>");
+		var post = $("<div class=\"well\" id=\"post-"+entryIdx+"-container\"></div>");
 		
 		// Post title
-		var postTitle = $("<div class=\"post-title\"></div>");
-		$(postTitle).append("<h4 class=\"inline-block\">"+entry.title+"</h4>");
+		var postTitle = $("<div class=\"post-title-"+entryIdx+"\"></div>");
+		var postTitleCollapse = $("<a href=\"#post-"+entryIdx+"\" data-toggle=\"collapse\" data-parent=\"#posts-container\"></a>");
+		$(postTitleCollapse).append("<h4 class=\"inline-block\">"+entry.title+"</h4>");
 		// Add icon
-		$(postTitle).append("<i class=\"icon-chevron-right icon-2x pull-right\"></i>");
+		$(postTitleCollapse).append("<i class=\"icon-chevron-right icon-2x pull-right\"></i>");
+		$(postTitle).append(postTitleCollapse);
 
+		
 		// Post content
-		var postContent = $("<div class=\"post-content\"></div>");
-		$(postContent).append(entry.content);
-		$(postContent).append("<input type=\"button\" onclick=\"window.open('"+entry.link+"');\" value=\"Ver en la web\">");
+		var postContent = $("<div id =\"post-"+entryIdx+"\" class=\"collapse post-content\"></div>");
 
-		$(postContent).hide();
+		// Listeners to change icon status when showing or hiding the content
+		$(postContent).on('show', function(){
+			var icon = $(this).parent().find(".icon-chevron-right");
+			if (icon != null){				
+				$(icon).removeClass("icon-chevron-right").addClass("icon-chevron-down");
+			}
+			//$(postContent).append(entry.content);
+			if (!postContent.contentLoaded){
+				$(postContent).append("<p>AAAAA</p>");
+				$(postContent).append("<input type=\"button\" onclick=\"window.open('"+entry.link+"');\" value=\"Ver en la web\">");
+				postContent.contentLoaded = true;
+			}
+		});
+
+		$(postContent).on('hide', function(){
+			var icon = $(this).parent().find(".icon-chevron-down");
+			if (icon != null){				
+				$(icon).removeClass("icon-chevron-down").addClass("icon-chevron-right");
+			}
+		});
+
 
 		$(post).append(postTitle);
 		$(post).append(postContent);
@@ -63,32 +84,6 @@ function loadPostsData(){
 			
 		}
 		$(post).append(categoriesDiv);
-
-
-		var clickHandler = function(){
-			var content = $(post).find(".post-content");
-			var downIcon = $(document).find(".icon-chevron-down");
-			if (downIcon != null){				
-				$(downIcon).removeClass("icon-chevron-down").addClass("icon-chevron-right");
-			}
-			if ($(content).hasClass("enabled")){
-				$(content).hide('slow');
-				$(content).removeClass("enabled");
-			}
-			else{
-				$(document).removeClass("enabled");
-				$('.post-content').hide('slow');
-				$(content).addClass("enabled");
-				var icon = $(post).find(".icon-chevron-right");
-				$(icon).removeClass("icon-chevron-right").addClass("icon-chevron-down");
-				$(content).show("slow", function(){
-					location.href = "#";
-					location.href = "#post-"+entryIdx;
-				});
-			}
-		};
-
-		$(postTitle).click(clickHandler);
 
 		$(postsContainer).append(post);
 	});
