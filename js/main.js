@@ -47,9 +47,9 @@ function loadPostsData(){
 			if (icon != null){				
 				$(icon).removeClass("icon-chevron-right").addClass("icon-chevron-down");
 			}
-			//$(postContent).append(entry.content);
+			
 			if (!postContent.contentLoaded){
-				$(postContent).append("<p>AAAAA</p>");
+				$(postContent).append(entry.content);
 				$(postContent).append("<input type=\"button\" onclick=\"window.open('"+entry.link+"');\" value=\"Ver en la web\">");
 				postContent.contentLoaded = true;
 			}
