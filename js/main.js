@@ -55,12 +55,15 @@ function loadPostsData(){
 				$(postContent).append("<input type=\"button\" onclick=\"window.open('"+entry.link+"');\" value=\"Ver en la web\">");
 				postContent.contentLoaded = true;
 			}
+		});
 
+		// When the post content is already shown
+		$(postContent).on('shown', function(){
 			// Scroll to the top of the post
 			var scroll = $("#post-"+entryIdx+"-container").offset().top - $('.navbar').height();
 			$('html, body').animate({
-        		scrollTop: scroll
-    		}, 2000);
+				scrollTop: scroll
+			}, 2000);
 		});
 
 		// When the post's content is going to be hidden
@@ -104,9 +107,20 @@ function parseDate(dateString){
 	return d.toLocaleString();
 }
 
-function main(){
-	parseFeed(RSS_FEED_URL);
+function setupHeader(){
 	// Adjust container to display the posts' container correctly, as the
 	// navbar is fixed to top
 	$('#posts-container').css('padding-top',$('.navbar').height()+'px');
+	// Adjust 'about' modal
+	$('#about').css(
+	{
+		'margin-top': function () {
+			return +($(this).height() / 2);
+		}
+	})
+}
+
+function main(){
+	parseFeed(RSS_FEED_URL);
+	setupHeader();
 }
