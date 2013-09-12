@@ -41,21 +41,31 @@ function loadPostsData(){
 		// Post content
 		var postContent = $("<div id =\"post-"+entryIdx+"\" class=\"collapse post-content\"></div>");
 
-		// Listeners to change icon status when showing or hiding the content
+		// When the post's content is going to be shown
 		$(postContent).on('show', function(){
+			// Replace the icon so it displays downwards
 			var icon = $(this).parent().find(".icon-chevron-right");
 			if (icon != null){				
 				$(icon).removeClass("icon-chevron-right").addClass("icon-chevron-down");
 			}
 			
+			// Load post content if not already loaded
 			if (!postContent.contentLoaded){
 				$(postContent).append(entry.content);
 				$(postContent).append("<input type=\"button\" onclick=\"window.open('"+entry.link+"');\" value=\"Ver en la web\">");
 				postContent.contentLoaded = true;
 			}
+
+			// Scroll to the top of the post
+			var scroll = $("#post-"+entryIdx+"-container").offset().top - $('.navbar').height();
+			$('html, body').animate({
+        		scrollTop: scroll
+    		}, 2000);
 		});
 
+		// When the post's content is going to be hidden
 		$(postContent).on('hide', function(){
+			// Change icon
 			var icon = $(this).parent().find(".icon-chevron-down");
 			if (icon != null){				
 				$(icon).removeClass("icon-chevron-down").addClass("icon-chevron-right");
@@ -96,4 +106,7 @@ function parseDate(dateString){
 
 function main(){
 	parseFeed(RSS_FEED_URL);
+	// Adjust container to display the posts' container correctly, as the
+	// navbar is fixed to top
+	$('#posts-container').css('padding-top',$('.navbar').height()+'px');
 }
