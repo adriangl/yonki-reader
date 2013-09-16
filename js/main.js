@@ -6,19 +6,16 @@ var CATEGORY_URL = BASE_URL+"/category";
 var entries = null;
 
 function parseFeed(feedUrl){
-	// Use Google AJAX API to read the feed and return the parsed
-	// data as JSON
-	$.ajax({
-		url      : 'http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&callback=?&num=50&q=' + encodeURIComponent(feedUrl),
-		dataType : 'json',
-		success  : function (data) {
-			if (data.responseData.feed && data.responseData.feed.entries) {
-				entries = data.responseData.feed.entries;
+	var feed = new google.feeds.Feed(feedUrl);
+	feed.includeHistoricalEntries();
+	feed.setNumEntries(250);
+
+	feed.load(function(result) {
+		if (!result.error) {
+			if (result.feed && result.feed.entries) {
+				entries = result.feed.entries;
 				loadPostsData();
 			}
-		},
-		error : function(){
-			console.log("Error loading data");
 		}
 	});
 }
